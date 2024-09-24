@@ -1,6 +1,7 @@
 package at.mavila.transaction.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,11 @@ class CustomerOrderServiceTest {
     this.customerOrderService.processOrder(RandomStringUtils.secureStrong().nextAlphanumeric(10), "POO1", 100L);
     this.customerOrderService.processOrder(RandomStringUtils.secureStrong().nextAlphanumeric(10), "POO1", 100L);
     this.customerOrderService.processOrder(RandomStringUtils.secureStrong().nextAlphanumeric(10), "POO1", 100L);
-    this.customerOrderService.processOrder(RandomStringUtils.secureStrong().nextAlphanumeric(10), "POO1", 800L);
+
+    assertThatThrownBy(() -> {
+      this.customerOrderService.processOrder(RandomStringUtils.secureStrong().nextAlphanumeric(10), "POO1", 800L);
+    }).isInstanceOf(InventoryException.class);
+
   }
 
 }
